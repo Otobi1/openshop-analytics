@@ -1,0 +1,23 @@
+version: 2
+
+models:
+  - name: stg_transactions
+    description: "Staging for raw.transactions"
+    columns:
+      - name: transaction_id
+        tests:
+          - not_null
+          - unique
+      - name: amount
+        tests:
+          - not_null
+
+  - name: fct_revenue
+    description: "Daily revenue summary"
+    columns:
+      - name: day
+        tests:
+          - not_null
+      - name: total_revenue
+        tests:
+          - not_null

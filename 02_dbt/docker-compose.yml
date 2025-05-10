@@ -1,0 +1,56 @@
+
+services:
+  postgres:
+    image: postgres:16
+    container_name: openshop-postgres
+    restart: unless-stopped
+    command:
+      - "postgres"
+      - "-c"
+      - "wal_level=logical"
+      - "-c"
+      - "max_wal_senders=4"
+      - "-c"
+      - "max_replication_slots=4"
+    environment:
+      POSTGRES_USER: analytics
+      POSTGRES_PASSWORD: analytics
+      POSTGRES_DB: analytics
+      POSTGRES_HOST_AUTH_METHOD: trust
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U analytics"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - openshop
+
+
+  dbt:
+    image: ghcr.io/dbt-labs/dbt-postgres:1.9.latest
+    container_name: dbt-core
+    platform: linux/amd64
+    working_dir: /usr/app/dbt
+    volumes:
+      - ./:/usr/app/dbt
+      - ./profiles.yml:/root/.dbt/profiles.yml:ro
+    env_file:
+      - ../.env
+    depends_on:
+      postgres:
+        condition: service_healthy
+    networks:
+      - openshop
+
+
+networks:
+  openshop:
+    driver: bridge
+
+volumes:
+  pgdata:
+  
