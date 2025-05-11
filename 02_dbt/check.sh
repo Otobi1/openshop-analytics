@@ -9,9 +9,10 @@ for i in {1..10}; do
   if docker exec openshop-postgres pg_isready -U analytics; then break; fi
   sleep 2
 done
-
-echo "Loading sample CSV…"
-python3 load_csv.py
+# to make mod 2 work, without any orchestration, I had to add the mod 1 load csv py and the bash step here
+# with mod 3 orchestration now, I can take it out, since, 3 calls 1 and the 2 
+# echo "Loading sample CSV…"
+# python3 load_csv.py
 
 echo " Runnung dbt models…"
 docker-compose run --rm dbt deps
