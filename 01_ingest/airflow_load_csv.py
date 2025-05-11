@@ -3,8 +3,9 @@ from sqlalchemy import create_engine, text
 import os
 
 # you can package the host, username, password and db name into a .env and load them here
-DATABASE_URL = os.getenv("DATABASE_URL",
-                          "postgresql://analytics:analytics@localhost:5432/analytics")
+# chnaged to use the airflow-postgres host inestas of localhost
+DEFAULT_DB = "postgresql://analytics:analytics@airflow-postgres:5432/analytics"
+DATABASE_URL = os.getenv("DATABASE_URL", DEFAULT_DB)
 
 # sometimes, you need to set and confirm the working directory to ensure the script runs in the correct context
 
