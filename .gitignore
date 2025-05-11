@@ -73,7 +73,6 @@ docs/_build/
 
 # PyBuilder
 .pybuilder/
-target/
 
 # Jupyter Notebook
 .ipynb_checkpoints
@@ -172,3 +171,12 @@ cython_debug/
 
 # PyPI configuration file
 .pypirc
+
+# project related 
+openshop-venv
+target/
+logs/
+dbt_packages/
+*.user.yml
+dbt_modules/
+_archive/
